@@ -13,33 +13,33 @@ import (
 const gitFitCacheDir = ".git/fit"
 
 func Gc(schema *config.Config, trans transport.Transport, args []string) {
-	filesDeclaredInSchema := make(map[string]bool, len(schema.Files)*2)
+	fileHashesDeclaredInSchema := make(map[string]bool, len(schema.Files)*2)
 
 	for _, hash := range schema.Files {
-		filesDeclaredInSchema[hash] = true
+		fileHashesDeclaredInSchema[hash] = true
 	}
 
-	allFiles, err := ioutil.ReadDir(gitFitCacheDir)
+	cacheFiles, err := ioutil.ReadDir(gitFitCacheDir)
 
 	if err != nil {
 		util.Fatal("Could not read %s: %s\n", gitFitCacheDir, err.Error())
 	}
 
-	for _, file := range allFiles {
-		fileNameHash := file.Name()
+	for _, cacheFile := range cacheFiles {
+		cacheFileName := cacheFile.Name()
 
 		if err := util.SHA1sumIsValidForCacheFile(util.SHA1sumValidatorArgs{
 			ReadDir:                 gitFitCacheDir,
-			FileName:                fileNameHash,
+			FileName:                cacheFileName,
 			GenerateSHA1Sum:         util.FileHash,
-			CacheFileHashesInSchema: filesDeclaredInSchema,
+			CacheFileHashesInSchema: fileHashesDeclaredInSchema,
 		}); err != nil {
 			util.Error("%s", err.Error())
-			path := fmt.Sprintf("%s/%s", gitFitCacheDir, file.Name())
+			path := fmt.Sprintf("%s/%s", gitFitCacheDir, cacheFile.Name())
 			err = os.Remove(path)
 
 			if err != nil {
-				util.Error("Could not delete cached file %s: %s\n", path, err.Error())
+				util.Error("Could not delete cach file %s: %s\n", path, err.Error())
 			}
 		}
 	}
