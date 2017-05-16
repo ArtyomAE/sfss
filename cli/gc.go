@@ -28,11 +28,11 @@ func Gc(schema *config.Config, trans transport.Transport, args []string) {
 	for _, file := range allFiles {
 		fileNameHash := file.Name()
 
-		if err := sha1sumIsValidForCacheFile(sha1sumValidatorArgs{
-			readDir:                 gitFitCacheDir,
-			fileName:                fileNameHash,
-			generateSHA1Sum:         util.FileHash,
-			cacheFileHashesInSchema: filesDeclaredInSchema,
+		if err := util.SHA1sumIsValidForCacheFile(util.SHA1sumValidatorArgs{
+			ReadDir:                 gitFitCacheDir,
+			FileName:                fileNameHash,
+			GenerateSHA1Sum:         util.FileHash,
+			CacheFileHashesInSchema: filesDeclaredInSchema,
 		}); err != nil {
 			util.Error("%s", err.Error())
 			path := fmt.Sprintf("%s/%s", gitFitCacheDir, file.Name())
@@ -43,48 +43,4 @@ func Gc(schema *config.Config, trans transport.Transport, args []string) {
 			}
 		}
 	}
-}
-
-type sha1sumValidatorArgs struct {
-	fileName                string
-	readDir                 string
-	cacheFileHashesInSchema map[string]bool
-	generateSHA1Sum         sha1SumGenerator
-}
-
-// fileReader is reponsible for opening files on FS.
-type fileReader func(filename string) ([]byte, error)
-
-// sha1SumGenerator is responsible for generating a sha1sum from a byte array.
-type sha1SumGenerator func(p string) (string, error)
-
-func sha1sumIsValidForCacheFile(args sha1sumValidatorArgs) error {
-	// Check to see if the file name SHA we're validating exists in the schema.
-	_, cacheObjExistsInSchema := args.cacheFileHashesInSchema[args.fileName]
-	if !cacheObjExistsInSchema {
-		return fmt.Errorf(
-			"file hash '%s' does not exist in schema",
-			args.fileName,
-		)
-	}
-
-	// Attempt to generate the SHA1Sum for the cache file.
-	filePath := fmt.Sprintf("%s/%s", args.readDir, args.fileName)
-	fileSHA1Sum, err := args.generateSHA1Sum(filePath)
-	if err != nil {
-		return fmt.Errorf(
-			"could not generate file hash: %s",
-			err.Error(),
-		)
-	}
-
-	// Check to make the correlating schema's hash equals the sha1sum of the cache file.
-	if fileSHA1Sum != args.fileName {
-		return fmt.Errorf(
-			"cache file '%s' did not equal the sha1sum of the correlating cache blob",
-			args.fileName,
-		)
-	}
-
-	return nil
 }
