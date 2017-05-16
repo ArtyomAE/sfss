@@ -35,7 +35,7 @@ func Gc(schema *config.Config, trans transport.Transport, args []string) {
 			CacheFileHashesInSchema: fileHashesDeclaredInSchema,
 		}); err != nil {
 			util.Error("%s", err.Error())
-			path := fmt.Sprintf("%s/%s", gitFitCacheDir, cacheFile.Name())
+			path := fmt.Sprintf("%s/%s \n", gitFitCacheDir, cacheFile.Name())
 			err = os.Remove(path)
 
 			if err != nil {
