@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/dailymuse/git-fit/config"
+	"github.com/dailymuse/git-fit/util"
 	. "github.com/smartystreets/goconvey/convey"
 )
 
@@ -19,7 +20,7 @@ func TestValidateCacheFile(t *testing.T) {
 				},
 			}
 
-			err := Gc(GCArgs{
+			err := Gc(GcArgs{
 				Args:   []string{"1"},
 				Schema: &config,
 				ReadDir: func(dirname string) ([]os.FileInfo, error) {
@@ -40,10 +41,10 @@ func TestValidateCacheFile(t *testing.T) {
 				},
 			}
 
-			file := NewMockFileInfo("not-a-real-sha-this-should-not-exist-in-schema")
+			file := util.NewMockFileInfo("not-a-real-sha-this-should-not-exist-in-schema")
 			files := []os.FileInfo{file}
 
-			err := Gc(GCArgs{
+			err := Gc(GcArgs{
 				Args:   []string{"1"},
 				Schema: &config,
 				ReadDir: func(dirname string) ([]os.FileInfo, error) {
@@ -71,10 +72,10 @@ func TestValidateCacheFile(t *testing.T) {
 					},
 				}
 
-				file := NewMockFileInfo("69e542360fa6f81b704199685432ddea1dc60944")
+				file := util.NewMockFileInfo("69e542360fa6f81b704199685432ddea1dc60944")
 				files := []os.FileInfo{file}
 
-				err := Gc(GCArgs{
+				err := Gc(GcArgs{
 					Args:   []string{"1"},
 					Schema: &config,
 					ReadDir: func(dirname string) ([]os.FileInfo, error) {
@@ -105,10 +106,10 @@ func TestValidateCacheFile(t *testing.T) {
 					},
 				}
 
-				file := NewMockFileInfo("69e542360fa6f81b704199685432ddea1dc60944")
+				file := util.NewMockFileInfo("69e542360fa6f81b704199685432ddea1dc60944")
 				files := []os.FileInfo{file}
 
-				err := Gc(GCArgs{
+				err := Gc(GcArgs{
 					Args:   []string{"1"},
 					Schema: &config,
 					ReadDir: func(dirname string) ([]os.FileInfo, error) {

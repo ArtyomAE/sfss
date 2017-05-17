@@ -99,7 +99,7 @@ func main() {
 		case "pull":
 			cli.Pull(schema, trans, os.Args[2:])
 		case "gc":
-			if err = cli.Gc(cli.GCArgs{
+			if err = cli.Gc(cli.GcArgs{
 				Args:             os.Args[2:],
 				Schema:           schema,
 				ReadDir:          ioutil.ReadDir,

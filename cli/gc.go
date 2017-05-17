@@ -9,7 +9,7 @@ import (
 const gitFitCacheDir = ".git/fit"
 
 // Gc is responsible for removing invalid cache objects not declared in the git-fit schema.json.
-func Gc(args GCArgs) error {
+func Gc(args GcArgs) error {
 	fileHashesDeclaredInSchema := make(map[string]bool, len(args.Schema.Files)*2)
 
 	for _, hash := range args.Schema.Files {
