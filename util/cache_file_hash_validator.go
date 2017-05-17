@@ -3,7 +3,7 @@ package util
 import "fmt"
 
 // SHA1sumIsValidForCacheFile verifies the integreity of a given cache file by generating
-// and checking the sha1sum of the cache file compared to the correlating schema's hash.
+// and checking the SHA1Sum of the cache file compared to the correlating schema's hash.
 func SHA1sumIsValidForCacheFile(args SHA1sumValidatorArgs) error {
 	// Check to see if the file name SHA we're validating exists in the schema.
 	_, cacheObjExistsInSchema := args.CacheFileHashesInSchema[args.FileName]
@@ -24,10 +24,10 @@ func SHA1sumIsValidForCacheFile(args SHA1sumValidatorArgs) error {
 		)
 	}
 
-	// Check to make the correlating schema's hash equals the sha1sum of the cache file.
+	// Check to make the correlating schema's hash equals the SHA1Sum of the cache file.
 	if fileSHA1Sum != args.FileName {
 		return fmt.Errorf(
-			"cache file '%s' did not equal the sha1sum of the correlating cache blob",
+			"cache file '%s' did not equal the SHA1Sum of the correlating cache blob",
 			args.FileName,
 		)
 	}

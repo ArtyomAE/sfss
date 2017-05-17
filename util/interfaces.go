@@ -9,5 +9,5 @@ type SHA1sumValidatorArgs struct {
 	GenerateSHA1Sum         SHA1SumGenerator
 }
 
-// SHA1SumGenerator is responsible for generating a sha1sum from a byte array.
+// SHA1SumGenerator is responsible for generating a SHA1Sum from a byte array.
 type SHA1SumGenerator func(p string) (string, error)

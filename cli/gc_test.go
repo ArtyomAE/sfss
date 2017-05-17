@@ -63,7 +63,7 @@ func TestValidateCacheFile(t *testing.T) {
 			So(err, ShouldBeNil)
 		})
 
-		Convey("if the sha1sum of a cached file does not match the sha1sum correlating to the schema, it should delete the cache", func() {
+		Convey("if the SHA1Sum of a cached file does not match the SHA1Sum correlating to the schema, it should delete the cache", func() {
 			Convey("if it fails to delete the cache file, it should return an error", func() {
 				config := config.Config{
 					Version: 1,
