@@ -2,14 +2,16 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path/filepath"
+
 	"github.com/dailymuse/git-fit/cli"
 	"github.com/dailymuse/git-fit/config"
 	"github.com/dailymuse/git-fit/transport"
 	"github.com/dailymuse/git-fit/util"
 	"github.com/mitchellh/goamz/aws"
 	"github.com/mitchellh/goamz/s3"
-	"os"
-	"path/filepath"
 )
 
 func help(code int) {
@@ -97,7 +99,16 @@ func main() {
 		case "pull":
 			cli.Pull(schema, trans, os.Args[2:])
 		case "gc":
-			cli.Gc(schema, trans, os.Args[2:])
+			if err = cli.Gc(cli.GCArgs{
+				Args:             os.Args[2:],
+				Schema:           schema,
+				ReadDir:          ioutil.ReadDir,
+				LogError:         util.Message,
+				RemoveFile:       os.Remove,
+				SHA1SumGenerator: util.FileHash,
+			}); err != nil {
+				util.Fatal(err.Error())
+			}
 		case "status":
 			cli.Status(schema, trans, os.Args[2:])
 		default:

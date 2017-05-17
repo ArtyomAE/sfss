@@ -2,45 +2,45 @@ package cli
 
 import (
 	"fmt"
-	"io/ioutil"
-	"os"
 
-	"github.com/dailymuse/git-fit/config"
-	"github.com/dailymuse/git-fit/transport"
 	"github.com/dailymuse/git-fit/util"
 )
 
 const gitFitCacheDir = ".git/fit"
 
-func Gc(schema *config.Config, trans transport.Transport, args []string) {
-	fileHashesDeclaredInSchema := make(map[string]bool, len(schema.Files)*2)
+// Gc is responsible for removing invalid cache objects not declared in the git-fit schema.json.
+func Gc(args GCArgs) error {
+	fileHashesDeclaredInSchema := make(map[string]bool, len(args.Schema.Files)*2)
 
-	for _, hash := range schema.Files {
+	for _, hash := range args.Schema.Files {
 		fileHashesDeclaredInSchema[hash] = true
 	}
 
-	cacheFiles, err := ioutil.ReadDir(gitFitCacheDir)
+	cacheFiles, err := args.ReadDir(gitFitCacheDir)
 
 	if err != nil {
-		util.Fatal("Could not read %s: %s\n", gitFitCacheDir, err.Error())
+		args.LogError("could not read %s: %s", gitFitCacheDir, err.Error())
+		return err
 	}
 
 	for _, cacheFile := range cacheFiles {
 		cacheFileName := cacheFile.Name()
-
 		if err := util.SHA1sumIsValidForCacheFile(util.SHA1sumValidatorArgs{
 			ReadDir:                 gitFitCacheDir,
 			FileName:                cacheFileName,
-			GenerateSHA1Sum:         util.FileHash,
+			GenerateSHA1Sum:         args.SHA1SumGenerator,
 			CacheFileHashesInSchema: fileHashesDeclaredInSchema,
 		}); err != nil {
-			util.Error("%s", err.Error())
-			path := fmt.Sprintf("%s/%s \n", gitFitCacheDir, cacheFile.Name())
-			err = os.Remove(path)
+			args.LogError("%s", err.Error())
+			path := fmt.Sprintf("%s/%s", gitFitCacheDir, cacheFile.Name())
+			err = args.RemoveFile(path)
 
 			if err != nil {
-				util.Error("Could not delete cach file %s: %s\n", path, err.Error())
+				args.LogError("could not delete cach file %s: %s", path, err.Error())
+				return err
 			}
 		}
 	}
+
+	return nil
 }

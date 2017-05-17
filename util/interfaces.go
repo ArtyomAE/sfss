@@ -6,8 +6,8 @@ type SHA1sumValidatorArgs struct {
 	FileName                string
 	ReadDir                 string
 	CacheFileHashesInSchema map[string]bool
-	GenerateSHA1Sum         sha1SumGenerator
+	GenerateSHA1Sum         SHA1SumGenerator
 }
 
-// sha1SumGenerator is responsible for generating a sha1sum from a byte array.
-type sha1SumGenerator func(p string) (string, error)
+// SHA1SumGenerator is responsible for generating a sha1sum from a byte array.
+type SHA1SumGenerator func(p string) (string, error)
