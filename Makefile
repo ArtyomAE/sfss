@@ -10,7 +10,7 @@ deps:
 	go get -u github.com/mitchellh/goamz/aws
 	go get -u github.com/mitchellh/goamz/s3
 	go get -u github.com/cheggaaa/pb
-	go get -u github.com/github.com/smartystreets/goconvey/convey
+	go get -u github.com/smartystreets/goconvey/convey
 
 unittests:
 	go test github.com/dailymuse/git-fit/transport github.com/dailymuse/git-fit/util
