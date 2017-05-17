@@ -12,7 +12,7 @@ func TestValidateCacheFile(t *testing.T) {
 	Convey("Given a cache file hash", t, func() {
 
 		Convey("if the file hash does not exist in the schema, it should return an error", func() {
-			err := SHA1sumIsValidForCacheFile(SHA1sumValidatorArgs{
+			err := SHA1SumIsValidForCacheFile(SHA1SumValidatorArgs{
 				ReadDir:                 "./git/fit",
 				FileName:                "69e542360fa6f81b704199685432ddea1dc6094",
 				CacheFileHashesInSchema: map[string]bool{},
@@ -22,7 +22,7 @@ func TestValidateCacheFile(t *testing.T) {
 		})
 
 		Convey("if the SHA1Sum generator fails to generate a SHA from cache file, it should return an error", func() {
-			err := SHA1sumIsValidForCacheFile(SHA1sumValidatorArgs{
+			err := SHA1SumIsValidForCacheFile(SHA1SumValidatorArgs{
 				ReadDir:  "./git/fit",
 				FileName: "69e542360fa6f81b704199685432ddea1dc60944",
 				GenerateSHA1Sum: func(p string) (string, error) {
@@ -35,7 +35,7 @@ func TestValidateCacheFile(t *testing.T) {
 		})
 
 		Convey("if the SHA1Sum of the cache file does not match the correlating schema SHA1Sum, it should return an error", func() {
-			err := SHA1sumIsValidForCacheFile(SHA1sumValidatorArgs{
+			err := SHA1SumIsValidForCacheFile(SHA1SumValidatorArgs{
 				ReadDir:  "./git/fit",
 				FileName: "69e542360fa6f81b704199685432ddea1dc60944",
 				GenerateSHA1Sum: func(p string) (string, error) {
@@ -48,7 +48,7 @@ func TestValidateCacheFile(t *testing.T) {
 		})
 
 		Convey("if the SHA1Sum of the cache file matches the correlating schema SHA1Sum, it should return nil", func() {
-			err := SHA1sumIsValidForCacheFile(SHA1sumValidatorArgs{
+			err := SHA1SumIsValidForCacheFile(SHA1SumValidatorArgs{
 				ReadDir:  "./git/fit",
 				FileName: "69e542360fa6f81b704199685432ddea1dc60944",
 				GenerateSHA1Sum: func(p string) (string, error) {

@@ -25,7 +25,7 @@ func Gc(args GcArgs) error {
 
 	for _, cacheFile := range cacheFiles {
 		cacheFileName := cacheFile.Name()
-		if err := util.SHA1sumIsValidForCacheFile(util.SHA1sumValidatorArgs{
+		if err := util.SHA1SumIsValidForCacheFile(util.SHA1SumValidatorArgs{
 			ReadDir:                 gitFitCacheDir,
 			FileName:                cacheFileName,
 			GenerateSHA1Sum:         args.SHA1SumGenerator,

@@ -14,7 +14,7 @@ type GcArgs struct {
 	ReadDir          dirFileReader
 	RemoveFile       fileRemover
 	LogError         errorLogger
-	SHA1SumIsValid   util.SHA1sumValidatorArgs
+	SHA1SumIsValid   util.SHA1SumValidatorArgs
 	SHA1SumGenerator util.SHA1SumGenerator
 }
 
