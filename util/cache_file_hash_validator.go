@@ -24,7 +24,7 @@ func SHA1sumIsValidForCacheFile(args SHA1sumValidatorArgs) error {
 		)
 	}
 
-	// Check to make the correlating schema's hash equals the SHA1Sum of the cache file.
+	// Verify the correlating schema's hash equals the SHA1Sum of the cache file.
 	if fileSHA1Sum != args.FileName {
 		return fmt.Errorf(
 			"cache file '%s' did not equal the SHA1Sum of the correlating cache blob",
